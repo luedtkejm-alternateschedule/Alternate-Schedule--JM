@@ -53,11 +53,22 @@ export async function GET(req: Request) {
         editable = (auth.userId === effectiveUser.id && auth.role === "STUDENT") || roleCanTeacher(auth.role) || roleCanAdmin(auth.role);
         label = choice?.choice_label || "";
         const areaOptions = ((areasRes.data || []) as any[]).filter((x) => x.period_number === period).map((x) => ({ value: `COMMON_AREA:${x.id}`, label: `${x.name} (${x.max_students})` }));
-        const sessionOptions = ((sessionsRes.data || []) as any[]).filter((s) => s.period_number === period).map((s: any) => {
-          const teacherName = s.app_users ? `${s.app_users.first_name} ${s.app_users.last_name}` : "Teacher";
-          const roomPart = s.room_number ? ` Room ${s.room_number}` : "";
-          return { value: `TEACHER_SESSION:${s.id}`, label: `${s.title} — ${teacherName}${roomPart}` };
-        });
+        const sessionOptions = ((sessionsRes.data || []) as any[])
+  .filter((s) => s.period_number === period)
+  .map((s: any) => {
+    const teacherLastName = s.app_users?.last_name || "Teacher";
+    const roomPart = s.room_number ? ` Room ${s.room_number}` : "";
+
+    const label =
+      s.session_type === "OFFICE_HOURS"
+        ? `${teacherLastName} - Office Hours${roomPart}`
+        : `${s.title} — ${teacherLastName}${roomPart}`;
+
+    return {
+      value: `TEACHER_SESSION:${s.id}`,
+      label
+    };
+  });
         options = [...areaOptions, ...sessionOptions];
       }
 
