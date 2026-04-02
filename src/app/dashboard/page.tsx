@@ -13,6 +13,7 @@ export default function DashboardPage() {
   const [editMode, setEditMode] = useState(false);
   const [staged, setStaged] = useState<any[]>([]);
   const [message, setMessage] = useState("");
+  const [buttonStatus, setButtonStatus] = useState<any>({});
   const [teachersCsv, setTeachersCsv] = useState("first name,last name,role,duty,schedule #\nTaylor,Teacher,TEACHER,Hall Duty,1");
   const [studentsCsv, setStudentsCsv] = useState("first name,last name,Schedule #,Special Periods\nSam,Student,1,");
   const [manual, setManual] = useState<any>({ firstName:"", lastName:"", role:"STUDENT", duty:"", scheduleNumber:1, specialPeriods:"", email:"" });
@@ -20,6 +21,14 @@ export default function DashboardPage() {
   const [teacherForms, setTeacherForms] = useState<any>({});
   const [history, setHistory] = useState<any[]>([]);
   const [settingsForm, setSettingsForm] = useState<any>({ studentLockDatetime:"", teacherLockDatetime:"" });
+
+  function flashButton(id: string, doneText: string, resetText = "") {
+  setButtonStatus((prev: any) => ({ ...prev, [id]: doneText }));
+
+  setTimeout(() => {
+    setButtonStatus((prev: any) => ({ ...prev, [id]: resetText }));
+  }, 1500);
+}
 
   const me = data?.me;
   const targetUser = data?.targetUser;
