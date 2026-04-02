@@ -114,7 +114,8 @@ export default function DashboardPage() {
     const json = await res.json();
     if (!res.ok) return setMessage(json.error || "Could not save schedule");
     setMessage("Student schedule saved.");
-    await load(targetUser.id);
+flashButton("saveStudentSchedule", "Saved");
+await load(targetUser.id);
   }
 
   async function unlockStudentSchedule() {
