@@ -249,7 +249,9 @@ await load(targetUser.id);
         {targetUser?.role === "STUDENT" && !studentSaved ? (
           <div className="row" style={{ marginTop: 12 }}>
             <div className="col"><button onClick={autoFill}>Auto-fill remaining</button></div>
-            <div className="col"><button className="primary" onClick={saveStudentSchedule}>Save schedule</button></div>
+            <div className="col"><button className="primary" onClick={saveStudentSchedule}>
+  {buttonStatus.saveStudentSchedule || "Save schedule"}
+</button></div>
             {(teacherViewingStudent || adminEditing) && staged.length ? <div className="col"><button className="primary" onClick={saveStaged}>Save overrides</button></div> : null}
           </div>
         ) : null}
